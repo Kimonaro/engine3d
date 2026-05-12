@@ -2,24 +2,15 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
-
-using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
+
 
 public class AudioManager : MonoBehaviour
 {
-    // Instância Singleton
     public static AudioManager Instance { get; private set; }
-
-    // Fonte principal para sons 2D (UI, música de fundo, etc.)
-    // Será criada automaticamente se não houver um AudioSource no GameObject
     private AudioSource _systemSource;
-
-    // Lista de AudioSources usados para sons 3D em loop/controle (ambiente, objetos etc.)
     private List<AudioSource> _activeSources = new List<AudioSource>();
-
-    // Configurações padrão para fontes 3D criadas em tempo de execução
+    
     [SerializeField] private float defaultMinDistance = 1f;
     [SerializeField] private float defaultMaxDistance = 500f;
 
@@ -35,8 +26,7 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
-        // Tenta obter um AudioSource existente no mesmo GameObject; caso não exista, cria um
+        
         _systemSource = GetComponent<AudioSource>();
         if (_systemSource == null)
         {
@@ -89,19 +79,17 @@ public class AudioManager : MonoBehaviour
     #endregion
 
     #region 3D Sound Controls (activeSources)
-
-    // Cria e retorna um AudioSource 3D já tocando (loop se desejado). O chamador pode guardar a referência
     public AudioSource Play3D(AudioClip clip, Vector3 position, float volume = 1f, bool loop = true)
     {
         if (clip == null) return null;
 
         GameObject go = new GameObject("3DSound_" + clip.name);
         go.transform.position = position;
-        go.transform.parent = this.transform; // organiza na hierarquia
+        go.transform.parent = this.transform;
 
         AudioSource src = go.AddComponent<AudioSource>();
         src.clip = clip;
-        src.spatialBlend = 1f; // totalmente 3D
+        src.spatialBlend = 1f;
         src.volume = volume;
         src.loop = loop;
         src.minDistance = defaultMinDistance;
@@ -118,8 +106,7 @@ public class AudioManager : MonoBehaviour
 
         return src;
     }
-
-    // Para um AudioSource 3D controlado
+    
         public void Pause3D(AudioSource source)
     {
         if (source == null) return;
@@ -140,27 +127,23 @@ public class AudioManager : MonoBehaviour
         if (source.gameObject != null)
             Destroy(source.gameObject);
     }
-
-    // OneShot 3D: usa PlayClipAtPoint (cria e destroi automaticamente)
+        
     public void Play3DOneShot(AudioClip clip, Vector3 position, float volume = 1f)
     {
         if (clip == null) return;
         AudioSource.PlayClipAtPoint(clip, position, volume);
     }
-
-    // Para limpar referências de fontes que terminaram (não loop)
+    
         private IEnumerator CleanupAfterPlayback(AudioSource src)
     {
         if (src == null) yield break;
-        // espera o fim do clip (caso seja interrompido/alterado, checa se ainda existe)
         yield return new WaitForSecondsRealtime(src.clip != null ? src.clip.length : 0f);
         if (src == null) yield break;
         _activeSources.Remove(src);
         if (src.gameObject != null)
             Destroy(src.gameObject);
     }
-
-    // Stop e limpa todas as fontes 3D ativas
+        
         public void StopAll3D()
     {
         foreach (var src in new List<AudioSource>(_activeSources))

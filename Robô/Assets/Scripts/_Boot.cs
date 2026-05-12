@@ -53,7 +53,6 @@ public static class AutoLoadBootScene
                     {
                         // Carrega a cena original e descarrega a _Boot
                         SceneManager.LoadScene(lastScenePath, LoadSceneMode.Additive);
-                        SceneManager.UnloadSceneAsync(BOOT_SCENE_NAME);
                     }
                 }
             }
