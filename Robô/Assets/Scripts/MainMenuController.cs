@@ -20,8 +20,7 @@ public class MainMenuController : MonoBehaviour
     public void IniciarJogo()
     {
         // Usando os nomes das funções que você tem no seu GameManager
-        GameManager.Instance.ChangeState(GameState.Gameplay);
-        GameManager.Instance.RequestSceneLoad("SampleScene");
+        GameManager.Instance.GamePlay();
     }
 
     public void SairDoJogo()

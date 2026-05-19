@@ -6,6 +6,7 @@ using System.Collections;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    
 
     [SerializeField] private GameState currentState;
 
@@ -45,4 +46,24 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Input alocado para o jogador.");
     }
+    
+    public void MenuPrincipal()
+    {
+        SceneManager.LoadScene("MenuPrincipal");
+       Instance.ChangeState(GameState.MenuPrincipal);
+    }
+    /*
+    public void Splash()
+    {
+        SceneManager.LoadScene("Splash");
+       // Instance.ChangeState(GameState.ExibindoSplash);
+    }*/
+
+    public void GamePlay()
+    {
+        Instance.ChangeState(GameState.Gameplay);
+        SceneManager.LoadScene("SampleScene");
+    }
+        
+    
 }
