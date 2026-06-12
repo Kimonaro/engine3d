@@ -21,6 +21,7 @@ public class MainMenuController : MonoBehaviour
     {
         // Usando os nomes das funções que você tem no seu GameManager
         GameManager.Instance.GamePlay();
+        
     }
 
     public void SairDoJogo()
