@@ -11,7 +11,7 @@ public class UpdateCollectibleCount : MonoBehaviour
         collectibleText = GetComponent<TextMeshProUGUI>();
         if (collectibleText == null)
         {
-            Debug.LogError("UpdateCollectibleCount script requires a TextMeshProUGUI component on the same GameObject.");
+            Debug.LogError("Deu errado.");
             return;
         }
         UpdateCollectibleDisplay(); // Initial update on start
@@ -27,7 +27,7 @@ public class UpdateCollectibleCount : MonoBehaviour
         int totalCollectibles = 0;
 
         // Check and count objects of type Collectible
-        Type collectibleType = Type.GetType("Pickup");
+        Type collectibleType = Type.GetType("Coletavel");
         if (collectibleType != null)
         {
             totalCollectibles += UnityEngine.Object.FindObjectsByType(collectibleType, FindObjectsSortMode.None).Length;
