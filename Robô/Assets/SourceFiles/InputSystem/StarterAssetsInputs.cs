@@ -90,6 +90,19 @@ namespace StarterAssets
 			
 
 		}
+		
+		private void OnTriggerEnter(Collider outro)
+		{
+			// Verifica se o objeto com o qual colidimos tem a tag "moeda"
+			if (outro.CompareTag("moeda"))
+			{
+				// Exibe a mensagem no console da Unity
+				Debug.Log("<color=cyan>moeda coletada</color>");
+
+				// Opcional: Destrói o objeto da moeda para ela desaparecer do jogo
+				Destroy(outro.gameObject);
+			}
+		}
 	}
 	
 }
