@@ -5,14 +5,20 @@ public class GerenciadorTextoUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI textoMoedas; 
 
+    // O OnEnable roda assim que a UI é ativada/carregada
+    private void OnEnable()
+    {
+        PlayerObserverManager.OnMoedasAlteradas += AtualizarTextoMoedas;
+    }
+
+    // O OnDisable roda se a UI for desligada ou destruída (previne vazamento de memória)
+    private void OnDisable()
+    {
+        PlayerObserverManager.OnMoedasAlteradas -= AtualizarTextoMoedas;
+    }
+
     private void Start()
     {
-        // 1. Nos inscrevemos no canal de forma segura aqui no Start
-        // Tiramos do OnEnable para evitar problemas se a cena carregar em tempos diferentes
-        PlayerObserverManager.OnMoedasAlteradas -= AtualizarTextoMoedas; // Prevenção de duplicados
-        PlayerObserverManager.OnMoedasAlteradas += AtualizarTextoMoedas;
-
-        // 2. Busca o valor que JÁ ESTÁ no gerenciador neste exato momento
         if (PlayerObserverManager.Instancia != null)
         {
             AtualizarTextoMoedas(PlayerObserverManager.Instancia.QuantidadeMoedas);
@@ -21,22 +27,16 @@ public class GerenciadorTextoUI : MonoBehaviour
         else
         {
             Debug.LogWarning("[UI] PlayerObserverManager ainda não existe na cena.");
-            textoMoedas.text = "Moedas: 0";
+            textoMoedas.text = "Moedas:";
         }
     }
 
-    private void OnDestroy()
-    {
-        // Sempre limpamos o evento quando o objeto deixa de existir para evitar bugs de memória
-        PlayerObserverManager.OnMoedasAlteradas -= AtualizarTextoMoedas;
-    }
-
-    private void AtualizarTextoMoedas(int quantidade)
+    private void AtualizarTextoMoedas(int quantidade) 
     {
         if (textoMoedas != null)
         {
-            textoMoedas.text = "Moedas: " + quantidade.ToString();
-            Debug.Log($"[UI VISUAL] O texto na tela mudou fisicamente para: Moedas: {quantidade}");
+            textoMoedas.text = "Moedas: " + quantidade;
+            Debug.Log($"[UI VISUAL] O texto na tela mudou fisicamente para: Moedas: " + quantidade);
         }
         else
         {

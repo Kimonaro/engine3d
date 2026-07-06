@@ -11,17 +11,22 @@ public class PlayerObserverManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instancia == null) Instancia = this;
-        else Destroy(gameObject);
+        if (Instancia == null) 
+        {
+            Instancia = this;
+            // ESSENCIAL: Impede que o contador de moedas seja destruído ao mudar de cena
+            DontDestroyOnLoad(gameObject); 
+        }
+        else 
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void AdicionarMoeda()
     {
         quantidadeMoedas++;
-        
-        // RASTREADOR 4: O número mudou no script principal?
         Debug.Log($"[GERENCIADOR] Moeda somada! Novo total: {quantidadeMoedas}. Disparando evento para a UI...");
-
         OnMoedasAlteradas?.Invoke(quantidadeMoedas);
     }
 }
