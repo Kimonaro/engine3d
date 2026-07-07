@@ -16,20 +16,7 @@ public class GerenciadorTextoUI : MonoBehaviour
     {
         PlayerObserverManager.OnMoedasAlteradas -= AtualizarTextoMoedas;
     }
-
-    private void Start()
-    {
-        if (PlayerObserverManager.Instancia != null)
-        {
-            AtualizarTextoMoedas(PlayerObserverManager.Instancia.QuantidadeMoedas);
-            Debug.Log($"[UI] Conectado ao canal! Valor inicial recuperado: {PlayerObserverManager.Instancia.QuantidadeMoedas}");
-        }
-        else
-        {
-            Debug.LogWarning("[UI] PlayerObserverManager ainda não existe na cena.");
-            textoMoedas.text = "Moedas:";
-        }
-    }
+    
 
     private void AtualizarTextoMoedas(int quantidade) 
     {

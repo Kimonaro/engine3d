@@ -1,32 +1,15 @@
 using System;
 using UnityEngine;
 
-public class PlayerObserverManager : MonoBehaviour
+public static class PlayerObserverManager
 {
-    public static PlayerObserverManager Instancia { get; private set; }
     public static event Action<int> OnMoedasAlteradas;
+    
 
-    private int quantidadeMoedas = 0;
-    public int QuantidadeMoedas => quantidadeMoedas;
-
-    private void Awake()
+    public static void AdicionarMoeda(int coin)
     {
-        if (Instancia == null) 
-        {
-            Instancia = this;
-            // ESSENCIAL: Impede que o contador de moedas seja destruído ao mudar de cena
-            DontDestroyOnLoad(gameObject); 
-        }
-        else 
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    public void AdicionarMoeda()
-    {
-        quantidadeMoedas++;
-        Debug.Log($"[GERENCIADOR] Moeda somada! Novo total: {quantidadeMoedas}. Disparando evento para a UI...");
-        OnMoedasAlteradas?.Invoke(quantidadeMoedas);
+        
+        Debug.Log($"[GERENCIADOR] Moeda somada! Novo total: {coin}. Disparando evento para a UI...");
+        OnMoedasAlteradas?.Invoke(coin);
     }
 }
